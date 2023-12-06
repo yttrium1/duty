@@ -1,0 +1,172 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Calendar Selection</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
+  <style>
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+    .date:hover {
+      cursor: pointer;
+      background-color: #fbd38d;
+    }
+    .calendar-day {
+      font-weight: bold;
+    }
+    .calendar-day-sun {
+      color: red;
+    }
+    .calendar-day-sat {
+      color: blue;
+    }
+    .step-button {
+      display: inline-block;
+      background-color: #68d391;
+      color: white;
+      font-weight: bold;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      margin-bottom: 8px;
+    }
+    #generate-url {
+      display: inline-block;
+      background-color: #f6e05e;
+      color: white;
+      font-weight: bold;
+      padding: 8px 16px;
+      border-radius: 9999px;
+      margin-bottom: 8px;
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      let currentMonth = new Date(2023, 11); // December 2023
+      const monthTitle = document.querySelectorAll('.month-title');
+      const calendarGrids = document.querySelectorAll('.calendar-grid');
+
+      function updateCalendar(month) {
+        monthTitle.forEach(title => {
+          title.textContent = `${month.getFullYear()}年 ${month.getMonth() + 1}月`;
+        });
+
+        calendarGrids.forEach(grid => {
+          grid.innerHTML = ''; // Clear the calendar grid
+
+          // Get the first day of the month
+          const firstDay = new Date(month.getFullYear(), month.getMonth(), 1).getDay();
+          // Get the number of days in the month
+          const daysInMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
+
+          // Add day labels
+          const daysOfWeek = ['日', '月', '火', '水', '木', '金', '土'];
+          daysOfWeek.forEach((day, index) => {
+            let dayClass = 'calendar-day';
+            if (index === 0) dayClass += ' calendar-day-sun';
+            if (index === 6) dayClass += ' calendar-day-sat';
+            grid.innerHTML += `<div class="${dayClass}">${day}</div>`;
+          });
+
+          // Add empty cells before the first day of the month
+          for (let i = 0; i < firstDay; i++) {
+            grid.innerHTML += '<div></div>';
+          }
+
+          // Add day cells to the calendar
+          for (let i = 1; i <= daysInMonth; i++) {
+            grid.innerHTML += `<div class="date">${i}</div>`;
+          }
+
+          // Re-add event listeners to new date elements
+          grid.querySelectorAll('.date').forEach(date => {
+            date.addEventListener('click', function() {
+              this.classList.toggle('bg-yellow-300');
+            });
+          });
+        });
+      }
+
+      updateCalendar(currentMonth);
+
+      document.querySelectorAll('.prev-month').forEach(button => {
+        button.addEventListener('click', function() {
+          currentMonth.setMonth(currentMonth.getMonth() - 1);
+          updateCalendar(currentMonth);
+        });
+      });
+
+      document.querySelectorAll('.next-month').forEach(button => {
+        button.addEventListener('click', function() {
+          currentMonth.setMonth(currentMonth.getMonth() + 1);
+          updateCalendar(currentMonth);
+        });
+      });
+
+      const generateUrlButton = document.getElementById('generate-url');
+      generateUrlButton.addEventListener('click', function() {
+        const name = document.querySelector('#name-input').value;
+        const preferredDates = Array.from(document.querySelectorAll('.preferred .date.bg-yellow-300')).map(el => el.textContent.trim());
+        const notPreferredDates = Array.from(document.querySelectorAll('.not-preferred .date.bg-yellow-300')).map(el => el.textContent.trim());
+        const summary = `回答者の名前: ${name}\n希望日: ${preferredDates.join(', ')}\n希望しない日: ${notPreferredDates.join(', ')}`;
+        
+        // Create mailto link
+        const email = 'yttrium4649@gmail.com';
+        const subject = encodeURIComponent('オンコール希望');
+        const body = encodeURIComponent(summary);
+        const mailtoLink = `mailto:${email}?subject=${subject}&body=${body}`;
+        
+        // Open the default email client with the email ready to be sent
+        window.location.href = mailtoLink;
+      });
+    });
+  </script>
+</head>
+<body class="bg-gray-100">
+  <div class="max-w-screen-md mx-auto py-10">
+    <div class="text-right mb-4">
+      <span class="text-lg font-semibold">呼内オンコール</span>
+    </div>
+
+    <div class="mb-8">
+      <span class="step-button">STEP 1</span>
+      <input id="name-input" type="text" placeholder="回答者の名前を入力してください" class="mt-2 p-2 border border-gray-300 rounded w-full">
+    </div>
+
+    <div class="mb-8">
+      <span class="step-button">STEP 2</span>
+      <p class="text-gray-700 text-sm mt-2">希望日を選択してください</p>
+      <div class="mt-2 p-4 border border-gray-300 rounded preferred bg-white">
+        <div class="flex justify-between items-center mb-4">
+          <button class="prev-month"><i class="fas fa-chevron-left"></i></button>
+          <span class="month-title font-bold">2023年 12月</span>
+          <button class="next-month"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div class="grid grid-cols-7 gap-1 calendar-grid">
+          <!-- Calendar days will be generated by JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-8">
+      <span class="step-button">STEP 3</span>
+      <p class="text-gray-700 text-sm mt-2">希望しない日を選択してください</p>
+      <div class="mt-2 p-4 border border-gray-300 rounded not-preferred bg-white">
+        <div class="flex justify-between items-center mb-4">
+          <button class="prev-month"><i class="fas fa-chevron-left"></i></button>
+          <span class="month-title font-bold">2023年 12月</span>
+          <button class="next-month"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div class="grid grid-cols-7 gap-1 calendar-grid">
+          <!-- Calendar days will be generated by JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <button id="generate-url" class="bg-yellow-400 text-white font-bold py-2 px-4 rounded-full">URLを発行する</button>
+    </div>
+  </div>
+</body>
+</html>
