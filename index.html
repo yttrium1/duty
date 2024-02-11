@@ -42,9 +42,15 @@
     }
   </style>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      let currentMonth = new Date(); // 現在の年月を取得
-      currentMonth.setDate(1); // 現在の月の最初の日に設定
+   document.addEventListener('DOMContentLoaded', function() {
+    let now = new Date(); // 現在の日付と時刻を取得
+    let currentMonth = new Date(now.getFullYear(), now.getMonth(), 1); // 現在の月の最初の日を取得
+
+  // 今日の日付が1から10の間であるかチェック
+  if (now.getDate() > 10) {
+    // 10日を超えている場合、次の月を表示
+    currentMonth.setMonth(currentMonth.getMonth() + 1);
+  }
       const monthTitle = document.querySelectorAll('.month-title');
       const calendarGrids = document.querySelectorAll('.calendar-grid');
 
