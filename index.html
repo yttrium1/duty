@@ -43,7 +43,8 @@
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      let currentMonth = new Date(2024, 0); // January 2024
+      let currentMonth = new Date(); // 現在の年月を取得
+      currentMonth.setDate(1); // 現在の月の最初の日に設定
       const monthTitle = document.querySelectorAll('.month-title');
       const calendarGrids = document.querySelectorAll('.calendar-grid');
 
