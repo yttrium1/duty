@@ -113,28 +113,33 @@
 
       const generateUrlButton = document.getElementById('generate-url');
       generateUrlButton.addEventListener('click', function() {
-        const name = document.querySelector('#name-input').value;
-        const comment = document.querySelector('#comment-input').value;
-        const preferredDates = Array.from(document.querySelectorAll('.preferred .date.bg-yellow-300')).map(el => el.textContent.trim());
-        const notPreferredDates = Array.from(document.querySelectorAll('.not-preferred .date.bg-yellow-300')).map(el => el.textContent.trim());
+  const nameSelect = document.getElementById('name-select');
+  let name = nameSelect.value;
+  if (name === 'その他') {
+    const otherNameInput = document.getElementById('other-name-input');
+    name = otherNameInput.value;
+    if (!name.trim()) {
+      alert('名前を入力してください。');
+      return;
+    }
+  } else if (!name) {
+    alert('名前を選択してください。');
+    return;
+  }
 
-        // 名前が入力されているかチェック
-        if (!name.trim()) {
-          alert('名前を入力してください。');
-          return;
-        }
-        
-        const summary = `回答者の名前: ${name}\n希望日: ${preferredDates.join(', ')}\n希望しない日: ${notPreferredDates.join(', ')}\nコメント: ${comment}`; // コメントを含める
-        
-        // Create mailto link
-        const email = 'rosai041321@gmail.com';
-        const subject = encodeURIComponent('オンコール希望');
-        const body = encodeURIComponent(summary);
-        const mailtoLink = `mailto:${email}?subject=${subject}&body=${body}`;
-        
-        // Open the default email client with the email ready to be sent
-        window.location.href = mailtoLink;
-      });
+  const comment = document.querySelector('#comment-input').value;
+  const preferredDates = Array.from(document.querySelectorAll('.preferred .date.bg-yellow-300')).map(el => el.textContent.trim());
+  const notPreferredDates = Array.from(document.querySelectorAll('.not-preferred .date.bg-yellow-300')).map(el => el.textContent.trim());
+  
+  const summary = `回答者の名前: ${name}\n希望日: ${preferredDates.join(', ')}\n希望しない日: ${notPreferredDates.join(', ')}\nコメント: ${comment}`;
+  const email = 'rosai041321@gmail.com';
+  const subject = encodeURIComponent('オンコール希望');
+  const body = encodeURIComponent(summary);
+  const mailtoLink = `mailto:${email}?subject=${subject}&body=${body}`;
+  
+  window.location.href = mailtoLink;
+});
+
     });
   </script>
 </head>
