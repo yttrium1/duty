@@ -144,12 +144,55 @@
       <span class="text-lg font-semibold">呼内オンコール</span>
     </div>
 
-    <div class="mb-8">
-      <span class="step-button">STEP 1</span>
-      <input id="name-input" type="text" placeholder="回答者の名前を入力してください" class="mt-2 p-2 border border-gray-300 rounded w-full">
-      <!-- ここに新しいエラーメッセージ表示用の要素を追加 -->
-      <p id="name-error" class="text-red-500 text-sm mt-2" style="display: none;">名前を入力してください。</p>
-    </div>
+  <div class="mb-8">
+  <span class="step-button">STEP 1</span>
+  <select id="name-select" class="mt-2 p-2 border border-gray-300 rounded w-full">
+    <option value="">回答者の名前を選択してください</option>
+    <option value="西中川">西中川</option>
+    <option value="大場">大場</option>
+    <option value="乾山">乾山</option>
+    <option value="荻野">荻野</option>
+    <option value="高橋（伸）">高橋（伸）</option>
+    <option value="渡辺（伸）">渡辺（伸）</option>
+    <option value="折原">折原</option>
+    <option value="池上">池上</option>
+    <option value="中島">中島</option>
+    <option value="河野">河野</option>
+    <option value="松村">松村</option>
+    <option value="伊藤">伊藤</option>
+    <option value="堂脇">堂脇</option>
+    <option value="古賀">古賀</option>
+    <option value="吉玉">吉玉</option>
+    <option value="浅原">浅原</option>
+    <option value="高亀">高亀</option>
+    <option value="中村">中村</option>
+    <option value="久次米">久次米</option>
+    <!-- 他の選択肢を追加 -->
+    <option value="その他">その他</option>
+  </select>
+  <!-- "その他"が選択された場合に表示する新しいテキスト入力フィールド -->
+  <input id="other-name-input" type="text" placeholder="名前を入力" class="mt-2 p-2 border border-gray-300 rounded w-full" style="display:none;">
+  <!-- エラーメッセージはそのまま -->
+  <p id="name-error" class="text-red-500 text-sm mt-2" style="display: none;">名前を入力してください。</p>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const nameSelect = document.getElementById('name-select');
+  const otherNameInput = document.getElementById('other-name-input');
+
+  // プルダウンメニューの選択が変更されたときのイベントリスナーを追加
+  nameSelect.addEventListener('change', function() {
+    if (this.value === 'その他') {
+      // "その他"が選択されたら、テキストフィールドを表示
+      otherNameInput.style.display = '';
+    } else {
+      // "その他"以外が選択されたら、テキストフィールドを非表示
+      otherNameInput.style.display = 'none';
+    }
+  });
+});
+</script>
 
     <div class="mb-8">
       <span class="step-button">STEP 2</span>
