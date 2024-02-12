@@ -5,12 +5,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
-<script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<script type="text/javascript">
-   (function(){
-      emailjs.init("rosai041321@gmail.com"); // "YOUR_USER_ID"をあなたのEmailJSのユーザーIDに置き換えてください
-   })();
-</script>
   <style>
     body {
       font-family: 'Noto Sans JP', sans-serif;
@@ -64,32 +58,6 @@
         monthTitle.forEach(title => {
           title.textContent = `${month.getFullYear()}年 ${month.getMonth() + 1}月`;
         });
-
-        // EmailJSを使ってフォームを送信する処理
-    document.getElementById('generate-url').addEventListener('click', function(event) {
-        event.preventDefault(); // フォームのデフォルト送信を防ぐ
-
-        // フォームのデータを取得
-        var nameSelect = document.getElementById('name-select');
-        var name = nameSelect.value === 'その他' ? document.getElementById('other-name-input').value : nameSelect.value;
-        var comment = document.getElementById('comment-input').value;
-        var preferredDates = Array.from(document.querySelectorAll('.preferred .date.bg-yellow-300')).map(el => el.textContent.trim()).join(', ');
-        var notPreferredDates = Array.from(document.querySelectorAll('.not-preferred .date.bg-yellow-300')).map(el => el.textContent.trim()).join(', ');
-
-        // EmailJSを使用してメールを送信
-        emailjs.send("service_1d6zngh", "template_wwoe11a", {
-            "name": name,
-            "comment": comment,
-            "preferred_dates": preferredDates,
-            "not_preferred_dates": notPreferredDates
-        }).then(function(response) {
-            alert('送信成功!');
-        }, function(error) {
-            alert('送信失敗: ' + error);
-        });
-    });
-});
-</script>
 
         calendarGrids.forEach(grid => {
           grid.innerHTML = ''; // Clear the calendar grid
@@ -174,7 +142,6 @@
 
     });
   </script>
-  
 </head>
 <body class="bg-gray-100">
   <div class="max-w-screen-md mx-auto py-10">
@@ -213,7 +180,12 @@
   <!-- エラーメッセージはそのまま -->
   <p id="name-error" class="text-red-500 text-sm mt-2" style="display: none;">名前を入力してください。</p>
 </div>
-
+ <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script type="text/javascript">
+    (function(){
+      emailjs.init("rosai041321@gmail.com"); // あなたのEmailJSのユーザーIDに置き換えてください
+    })();
+  </script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const nameSelect = document.getElementById('name-select');
