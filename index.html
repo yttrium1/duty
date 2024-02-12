@@ -211,6 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var comment = document.getElementById('comment-input').value;
         var preferredDates = Array.from(document.querySelectorAll('.preferred .date.bg-yellow-300')).map(el => el.textContent.trim()).join(', ');
         var notPreferredDates = Array.from(document.querySelectorAll('.not-preferred .date.bg-yellow-300')).map(el => el.textContent.trim()).join(', ');
+        var email = document.getElementById('email-input').value;
 
         // EmailJSを使用してメールを送信
         emailjs.send("service_1d6zngh", "template_rm69kao", {
