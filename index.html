@@ -217,11 +217,12 @@ document.addEventListener('DOMContentLoaded', function() {
             "name": name,
             "comment": comment,
             "preferred_dates": preferredDates,
-            "not_preferred_dates": notPreferredDates
+            "not_preferred_dates": notPreferredDates,
+            "email": email
         }).then(function(response) {
-            alert('送信成功!');
+            alert('送信できました!ありがとうございます！');
         }, function(error) {
-            alert('送信失敗: ' + error);
+            alert('送信失敗．もう一度試しても失敗する場合はrosai041321@gmail.comに連絡をください: ' + error);
         });
     });
 });
