@@ -214,6 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var email = document.getElementById('email-input').value;
 
         // EmailJSを使用してメールを送信
+        console.log(preferredDates, notPreferredDates);
         emailjs.send("service_1d6zngh", "template_rm69kao", {
             "name": name,
             "comment": comment,
