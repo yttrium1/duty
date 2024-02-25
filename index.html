@@ -122,19 +122,48 @@
           }
 
           // 日付のセルを追加する部分のコードに以下の変更を加えます
-          for (let i = 1; i <= daysInMonth; i++) {
-            const date = new Date(month.getFullYear(), month.getMonth(), i);
-            const dayOfWeek = date.getDay(); // 0:日曜日, 6:土曜日
-            let dateLabel = `${i}`; // デフォルトのラベル
+          // In your existing loop where you add day cells to the calendar
+for (let i = 1; i <= daysInMonth; i++) {
+    const dateElement = document.createElement("div");
+    dateElement.classList.add("date");
+    const day = new Date(month.getFullYear(), month.getMonth(), i).getDay();
+    
+    // Assuming 0 is Sunday and 6 is Saturday in your locale
+    if (day === 0 || day === 6) {
+        // Create a container for the date and buttons
+        const dateContainer = document.createElement("div");
+        dateContainer.classList.add("date-container");
+        
+        // Create the date text
+        const dateText = document.createElement("span");
+        dateText.textContent = i;
+        
+        // Create "日直" button or text
+        const dayButton = document.createElement("button");
+        dayButton.textContent = "日";
+        dayButton.onclick = function() { /* Your function for 日直 */ };
+        
+        // Create "当直" button or text
+        const nightButton = document.createElement("button");
+        nightButton.textContent = "当";
+        nightButton.onclick = function() { /* Your function for 当直 */ };
+        
+        // Append elements to the container
+        dateContainer.appendChild(dateText);
+        dateContainer.appendChild(dayButton);
+        dateContainer.appendChild(nightButton);
+        
+        // Append the container to the grid
+        grid.appendChild(dateContainer);
+    } else {
+        // For weekdays, just append the date
+        dateElement.textContent = i;
+        grid.appendChild(dateElement);
+    }
+}
 
-            // 土曜日または日曜日の場合、特別なマークを追加
-            if (dayOfWeek === 0 || dayOfWeek === 6) {
-              dateLabel = `${i}（日）, ${i}（当）`;
-            }
+// Make sure you adjust your CSS to style the new elements appropriately.
 
-            // dateLabelを使用して日付のセルを追加
-            grid.innerHTML += `<div class="date">${dateLabel}</div>`;
-          }
 
 
           // Re-add event listeners to new date elements
