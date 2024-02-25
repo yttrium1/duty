@@ -121,10 +121,21 @@
             grid.innerHTML += '<div></div>';
           }
 
-          // Add day cells to the calendar
+          // 日付のセルを追加する部分のコードに以下の変更を加えます
           for (let i = 1; i <= daysInMonth; i++) {
-            grid.innerHTML += `<div class="date">${i}</div>`;
+            const date = new Date(month.getFullYear(), month.getMonth(), i);
+            const dayOfWeek = date.getDay(); // 0:日曜日, 6:土曜日
+            let dateLabel = `${i}`; // デフォルトのラベル
+
+            // 土曜日または日曜日の場合、特別なマークを追加
+            if (dayOfWeek === 0 || dayOfWeek === 6) {
+              dateLabel = `${i}（日）, ${i}（当）`;
+            }
+
+            // dateLabelを使用して日付のセルを追加
+            grid.innerHTML += `<div class="date">${dateLabel}</div>`;
           }
+
 
           // Re-add event listeners to new date elements
           grid.querySelectorAll('.date').forEach(date => {
