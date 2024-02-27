@@ -325,11 +325,12 @@ document.addEventListener('DOMContentLoaded', function() {
     <textarea id="comment-input" class="mt-2 p-2 border border-gray-300 rounded w-full" placeholder="コメント"></textarea>
     </div>
     <div class="mb-8">
-      <label for="email-input" class="block text-sm font-medium text-gray-700">メールアドレス（任意ですが，登録すると送信結果がメールで送られます）</label>
+      <label for="email-input" class="block text-sm font-medium text-gray-700">メールアドレス（任意ですが，登録すると回答結果が登録されたメールで送られ，自分の回答結果をあとで確認できます．）</label>
       <input type="email" id="email-input" name="email" placeholder="your.email@example.com" class="mt-1 p-2 border border-gray-300 rounded w-full">
     </div>
     <div>
       <button id="generate-url" class="bg-green-600 text-white font-bold py-2 px-4 rounded-full">送信する</button>
+            <p class="text-gray-700 text-sm mt-2">（ボタンを押した後，完了まで数秒かかります．）</p>
     </div>
   </div>
 </body>
