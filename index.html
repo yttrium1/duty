@@ -13,7 +13,22 @@
 　　　　background-color: #b0c4de;
       }
     </body>
-    
+
+
+    body {
+  margin: 0;
+  padding: 20px; /* 上下左右に20pxのパディングを追加 */
+  font-family: 'Noto Sans JP', sans-serif;
+  background-color: #b0c4de;
+}
+
+.container {
+  max-width: 1200px; /* コンテンツの最大幅を1200pxに設定 */
+  margin: 0 auto; /* 左右のマージンをautoに設定して中央寄せ */
+  padding: 20px; /* コンテナの内側に20pxのパディングを追加 */
+  background-color: white; /* 背景色を白に設定 */
+  box-shadow: 0 0 10px rgba(0,0,0,0.1); /* シャドウを追加して立体感を出す */
+}
     .date:hover {
       cursor: pointer;
       background-color: #fbd38d;
@@ -181,6 +196,7 @@
   </script>
 </head>
 <body class="bg-gray-100">
+  <div class="container"> <!-- コンテナを開始 -->
   <div class="max-w-screen-md mx-auto py-10">
     <div class="text-right mb-4">
       <span class="text-lg font-semibold">内科当直希望</span>
