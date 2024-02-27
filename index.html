@@ -1,6 +1,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calendar Selection</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -63,11 +64,7 @@
     .date {
       transition: background-color 0.3s ease; /* ホバーエフェクトの滑らかな変化 */
     }
-
-    .date:hover {
-      background-color: #fbd38d; /* ホバー時の背景色 */
-      cursor: pointer;
-    }
+    
     #generate-url {
       display: inline-block;
       background-color: #7B68EE
@@ -308,7 +305,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     <div class="mb-8">
       <span class="step-button">STEP 4</span>
-      <p class="text-gray-700 text-sm mt-2">コメントを追加してください（任意）なお休日で日直のみ当直のみを希望する日はこちらにコメントをお願いします．現在ボタンを変更できないか開発中です．お手数をおかけしますがよろしくお願いします</p>
+      <p class="text-gray-700 text-sm mt-2">コメントを追加してください（任意）休日で，日直のみ　または　当直のみを希望する日はこちらにコメントをお願いします．例）「17は当直のみ×です」など．現在ボタンを変更できないか開発中です．お手数をおかけしますがよろしくお願いします</p>
     <textarea id="comment-input" class="mt-2 p-2 border border-gray-300 rounded w-full" placeholder="コメント"></textarea>
     </div>
     <div class="mb-8">
