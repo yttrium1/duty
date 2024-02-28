@@ -1,3 +1,5 @@
+とりあえず完成
+
 <html>
 <head>
   <meta charset="UTF-8">
@@ -193,6 +195,7 @@
           updateCalendar(currentMonth);
         });
       });
+
       const generateUrlButton = document.getElementById('generate-url');
       generateUrlButton.addEventListener('click', function() {
   const nameSelect = document.getElementById('name-select');
@@ -223,47 +226,6 @@
 });
 
     });
-   document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.date').forEach(function(dateElement) {
-        dateElement.addEventListener('touchend', function(e) {
-            // デフォルトのイベントをキャンセル
-            e.preventDefault();
-            // クリックイベントと同様のロジックをここに記述
-            if (this.classList.contains('bg-yellow-300')) {
-                this.classList.remove('bg-yellow-300');
-            } else {
-                this.classList.add('bg-yellow-300');
-            }
-        });
-    });
-});
-
-   document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.date').forEach(function(dateElement) {
-        dateElement.addEventListener('touchend', function(e) {
-            // デフォルトのイベントをキャンセル
-            e.preventDefault();
-            // クリックイベントと同様のロジックをここに記述
-            if (this.classList.contains('bg-yellow-300')) {
-                this.classList.remove('bg-yellow-300');
-            } else {
-                this.classList.add('bg-yellow-300');
-            }
-        });
-    });
-
-    // 特定の日（例：2024年4月29日）に対する処理
-    const specialDate = document.querySelector('[data-date="2024-04-29"]');
-    if (specialDate) {
-        specialDate.addEventListener('click', function() {
-            // 特定の日に対する特別な処理
-            // ここに特定の日に適用したい処理を記述
-            alert('2024年4月29日が選択されました。'); // 例
-        });
-    }
-});
-
-
   </script>
 </head>
 <body class="bg-gray-100">
@@ -392,7 +354,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     <div class="mb-8">
       <span class="step-button">STEP 4</span>
-      <p class="text-gray-700 text-sm mt-2">コメントを追加してください（任意）4/29(祝）に関して当直のみあるいは日直のみを希望する，もしくは希望しない場合はこちらにコメントをお願いします．祝日をカレンダーに反映できるように開発中です．申し訳ありません．</p>
+      <p class="text-gray-700 text-sm mt-2">コメントを追加してください（任意）休日で，日直のみ　または　当直のみを希望する日はこちらにコメントをお願いします．例）「17は当直のみ×です」など．現在ボタンを変更できないか開発中です．お手数をおかけしますがよろしくお願いします</p>
     <textarea id="comment-input" class="mt-2 p-2 border border-gray-300 rounded w-full" placeholder="コメント"></textarea>
     </div>
     <div class="mb-8">
