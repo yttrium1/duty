@@ -186,7 +186,25 @@
           updateCalendar(currentMonth);
         });
       });
-
+      // ここに新しいコードを追加
+      document.querySelectorAll('.date').forEach(function(dateElement) {
+        dateElement.addEventListener('touchend', function(e) {
+          // デフォルトのイベントをキャンセル
+          e.preventDefault();
+          // 'bg-yellow-300' クラスが既にあるかどうかをチェック
+          if (this.classList.contains('bg-yellow-300')) {
+            // もしクラスがあれば、それを削除して背景色を元に戻す
+            this.classList.remove('bg-yellow-300');
+          } else {
+            // その他の日付が選択された場合、以前の選択をクリアし、新たに選択
+            document.querySelectorAll('.date.bg-yellow-300').forEach(function(selectedDate) {
+              selectedDate.classList.remove('bg-yellow-300');
+            });
+            // クラスがなければ、追加して色を変更する
+            this.classList.add('bg-yellow-300');
+          }
+        });
+      });
       document.querySelectorAll('.next-month').forEach(button => {
         button.addEventListener('click', function() {
           currentMonth.setMonth(currentMonth.getMonth() + 1);
