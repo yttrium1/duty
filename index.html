@@ -155,21 +155,19 @@
 
           // Add day cells to the calendar, including special markers for weekends
           for (let i = 1; i <= daysInMonth; i++) {
-          let date = new Date(month.getFullYear(), month.getMonth(), i);
-          let dayOfWeek = date.getDay();
-          let isSpecialDate = date.getFullYear() === 2024 && date.getMonth() === 3 && date.getDate() === 29; // 月は0から始まるため、3は4月を意味する
-    
-          if (dayOfWeek === 0 || dayOfWeek === 6 || isSpecialDate) {
-            grid.innerHTML += `
-              <div class="date-cell">
-                <div class="date duty">${i}当</div>
+            let date = new Date(month.getFullYear(), month.getMonth(), i);
+            let dayOfWeek = date.getDay();
+            if (dayOfWeek === 0 || dayOfWeek === 6) { // 土日の場合
+              // Wrapping both "duty" and "day" inside "date-cell" container
+              grid.innerHTML += `
+                <div class="date-cell">
+                  <div class="date duty">${i}当</div>
                 <div class="date day">${i}日</div>
-              </div>`;
-          } else {
-            grid.innerHTML += `<div class="date">${i}</div>`;
+                </div>`;
+            } else { // 平日の場合
+              grid.innerHTML += `<div class="date">${i}</div>`;
+            }
           }
-        }
-
 
           // Re-add event listeners to all date elements including "当" and "日"
           grid.querySelectorAll('.date, .duty, .day').forEach(date => {
@@ -189,25 +187,6 @@
         });
       });
 
-         // ここに新しいコードを追加
-    document.querySelectorAll('.date').forEach(function(dateElement) {
-      dateElement.addEventListener('touchend', function(e) {
-        // デフォルトのイベントをキャンセル
-        e.preventDefault();
-        // 'bg-yellow-300' クラスが既にあるかどうかをチェック
-        if (this.classList.contains('bg-yellow-300')) {
-          // もしクラスがあれば、それを削除して背景色を元に戻す
-          this.classList.remove('bg-yellow-300');
-        } else {
-          // その他の日付が選択された場合、以前の選択をクリアし、新たに選択
-          document.querySelectorAll('.date.bg-yellow-300').forEach(function(selectedDate) {
-            selectedDate.classList.remove('bg-yellow-300');
-          });
-          // クラスがなければ、追加して色を変更する
-          this.classList.add('bg-yellow-300');
-        }
-      });
-    });
       document.querySelectorAll('.next-month').forEach(button => {
         button.addEventListener('click', function() {
           currentMonth.setMonth(currentMonth.getMonth() + 1);
@@ -251,7 +230,7 @@
   <div class="container"> <!-- コンテナを開始 -->
   <div class="max-w-screen-md mx-auto py-10">
     <div class="text-right mb-4">
-      <span class="text-lg font-semibold">内科日当直希望</span>
+      <span class="text-lg font-semibold">内科当直希望</span>
     </div>
 
   <div class="mb-8">
@@ -373,7 +352,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     <div class="mb-8">
       <span class="step-button">STEP 4</span>
-      <p class="text-gray-700 text-sm mt-2">コメントを追加してください（任意）</p>
+      <p class="text-gray-700 text-sm mt-2">コメントを追加してください（任意）休日で，日直のみ　または　当直のみを希望する日はこちらにコメントをお願いします．例）「17は当直のみ×です」など．現在ボタンを変更できないか開発中です．お手数をおかけしますがよろしくお願いします</p>
     <textarea id="comment-input" class="mt-2 p-2 border border-gray-300 rounded w-full" placeholder="コメント"></textarea>
     </div>
     <div class="mb-8">
