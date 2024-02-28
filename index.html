@@ -1,3 +1,5 @@
+とりあえず完成
+
 <html>
 <head>
   <meta charset="UTF-8">
@@ -111,7 +113,7 @@
     }
   </style>
   <script>
-   script
+   document.addEventListener('DOMContentLoaded', function() {
     let now = new Date(); // 現在の日付と時刻を取得
     let currentMonth = new Date(now.getFullYear(), now.getMonth(), 1); // 現在の月の最初の日を取得
 
@@ -186,7 +188,26 @@
           updateCalendar(currentMonth);
         });
       });
-      
+
+         // ここに新しいコードを追加
+    document.querySelectorAll('.date').forEach(function(dateElement) {
+      dateElement.addEventListener('touchend', function(e) {
+        // デフォルトのイベントをキャンセル
+        e.preventDefault();
+        // 'bg-yellow-300' クラスが既にあるかどうかをチェック
+        if (this.classList.contains('bg-yellow-300')) {
+          // もしクラスがあれば、それを削除して背景色を元に戻す
+          this.classList.remove('bg-yellow-300');
+        } else {
+          // その他の日付が選択された場合、以前の選択をクリアし、新たに選択
+          document.querySelectorAll('.date.bg-yellow-300').forEach(function(selectedDate) {
+            selectedDate.classList.remove('bg-yellow-300');
+          });
+          // クラスがなければ、追加して色を変更する
+          this.classList.add('bg-yellow-300');
+        }
+      });
+    });
       document.querySelectorAll('.next-month').forEach(button => {
         button.addEventListener('click', function() {
           currentMonth.setMonth(currentMonth.getMonth() + 1);
@@ -230,7 +251,7 @@
   <div class="container"> <!-- コンテナを開始 -->
   <div class="max-w-screen-md mx-auto py-10">
     <div class="text-right mb-4">
-      <span class="text-lg font-semibold">内科日当直希望</span>
+      <span class="text-lg font-semibold">内科当直希望</span>
     </div>
 
   <div class="mb-8">
@@ -271,7 +292,7 @@
     })();
   </script>
 <script>
-script
+document.addEventListener('DOMContentLoaded', function() {
   const nameSelect = document.getElementById('name-select');
   const otherNameInput = document.getElementById('other-name-input');
 
