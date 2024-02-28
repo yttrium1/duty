@@ -194,18 +194,19 @@
         });
       });
 
-     // Insert the new JavaScript code here
       document.querySelectorAll('.date').forEach(function(date) {
-        date.addEventListener('click', function() {
-          document.querySelectorAll('.date.bg-yellow-300').forEach(function(selectedDate) {
-            if (selectedDate !== this) {
-              selectedDate.classList.remove('bg-yellow-300');
-            }
-          }, this);
-          this.classList.toggle('bg-yellow-300');
-        });
-      });
-
+    date.addEventListener('click', function() {
+      // クリックされた要素が既に選択状態（bg-yellow-300クラスを持っている）かどうかをチェック
+      if (this.classList.contains('bg-yellow-300')) {
+        // 既に選択状態の場合は選択を解除
+        this.classList.remove('bg-yellow-300');
+      } else {
+        // 選択状態ではない場合は、選択
+        this.classList.add('bg-yellow-300');
+      }
+    });
+  });
+     
       const generateUrlButton = document.getElementById('generate-url');
       generateUrlButton.addEventListener('click', function() {
   const nameSelect = document.getElementById('name-select');
