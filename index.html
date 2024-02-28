@@ -225,13 +225,13 @@
     });
    document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.date').forEach(function(dateElement) {
-        dateElement.addEventListener('click', function() {
-            // この要素が既に選択されているかどうかをチェック
+        dateElement.addEventListener('touchend', function(e) {
+            // デフォルトのイベントをキャンセル
+            e.preventDefault();
+            // クリックイベントと同様のロジックをここに記述
             if (this.classList.contains('bg-yellow-300')) {
-                // 既に選択されていれば選択解除
                 this.classList.remove('bg-yellow-300');
             } else {
-                // 選択されていなければ選択
                 this.classList.add('bg-yellow-300');
             }
         });
