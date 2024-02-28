@@ -226,12 +226,12 @@
    document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.date').forEach(function(dateElement) {
         dateElement.addEventListener('click', function() {
-            // すでに 'bg-yellow-300' クラスがあるかどうかをチェックします。
+            // この要素が既に選択されているかどうかをチェック
             if (this.classList.contains('bg-yellow-300')) {
-                // もしクラスがあれば、それを削除して背景色を元に戻します。
+                // 既に選択されていれば選択解除
                 this.classList.remove('bg-yellow-300');
             } else {
-                // クラスがなければ、追加して色を変更します。
+                // 選択されていなければ選択
                 this.classList.add('bg-yellow-300');
             }
         });
