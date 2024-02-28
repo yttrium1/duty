@@ -238,6 +238,32 @@
     });
 });
 
+   document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.date').forEach(function(dateElement) {
+        dateElement.addEventListener('touchend', function(e) {
+            // デフォルトのイベントをキャンセル
+            e.preventDefault();
+            // クリックイベントと同様のロジックをここに記述
+            if (this.classList.contains('bg-yellow-300')) {
+                this.classList.remove('bg-yellow-300');
+            } else {
+                this.classList.add('bg-yellow-300');
+            }
+        });
+    });
+
+    // 特定の日（例：2024年4月29日）に対する処理
+    const specialDate = document.querySelector('[data-date="2024-04-29"]');
+    if (specialDate) {
+        specialDate.addEventListener('click', function() {
+            // 特定の日に対する特別な処理
+            // ここに特定の日に適用したい処理を記述
+            alert('2024年4月29日が選択されました。'); // 例
+        });
+    }
+});
+
+
   </script>
 </head>
 <body class="bg-gray-100">
