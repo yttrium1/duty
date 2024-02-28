@@ -194,6 +194,18 @@
         });
       });
 
+     // Insert the new JavaScript code here
+      document.querySelectorAll('.date').forEach(function(date) {
+        date.addEventListener('click', function() {
+          document.querySelectorAll('.date.bg-yellow-300').forEach(function(selectedDate) {
+            if (selectedDate !== this) {
+              selectedDate.classList.remove('bg-yellow-300');
+            }
+          }, this);
+          this.classList.toggle('bg-yellow-300');
+        });
+      });
+
       const generateUrlButton = document.getElementById('generate-url');
       generateUrlButton.addEventListener('click', function() {
   const nameSelect = document.getElementById('name-select');
