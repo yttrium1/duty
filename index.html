@@ -231,6 +231,15 @@ box-shadow: 0 0 0 0 transparent;
               "2024-11-03", // 文化の日
               "2024-11-04", // 
               "2024-11-23", // 勤労感謝の
+              "2024-12-30", //
+              "2024-12-31", //
+              "2025-01-01", //
+              "2025-01-02", //
+              "2025-01-03", //
+              "2025-01-13", //
+              "2025-02-11", //
+              "2025-02-24", //
+              "2025-03-20", //
             ];
           // Add day cells to the calendar, including special markers for weekends
           const isHoliday = (date) => {
@@ -345,6 +354,7 @@ box-shadow: 0 0 0 0 transparent;
     <option value="小泉">小泉</option>
     <option value="中村">中村</option>
     <option value="有上">有上</option>
+    <option value="有上">有上</option>
     <option value="久次米（謝金）">久次米（謝金）</option>
     
     <!-- 他の選択肢を追加 -->
@@ -413,7 +423,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     <div class="mb-8">
       <span class="step-button">STEP 2</span>
-      <p class="text-gray-700 text-sm mt-2">希望日を選択してください．</p>
+      <p class="text-gray-700 text-sm mt-2">希望日を選択してください．奇数週の水曜以外でお願いします。循環器の先生以外は木曜日以外でお願いします。</p>
       <div class="mt-2 p-4 border border-gray-300 rounded preferred bg-white">
         <div class="flex justify-between items-center mb-4">
           <button class="prev-month"><i class="fas fa-chevron-left"></i></button>
