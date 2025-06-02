@@ -264,13 +264,24 @@
     .empty-cell {
       background-color: var(--bg-tertiary);
     }
+
+    /* 祝日の背景色を薄いトーンに */
+    .holiday {
+      background-color: #fff5f5 !important;
+    }
+    .holiday .date-btn:not(.selected) {
+      color: var(--danger);
+    }
+
     .btn-primary {
       display: inline-flex; align-items: center; justify-content: center;
       gap: 0.5rem; background-color: var(--accent); color: white;
       font-weight: 600; padding: 0.75rem 1.75rem; border-radius: var(--radius);
       border: none; cursor: pointer; transition: all 0.1s ease;
-      font-size: 0.9375rem; width: 100%;
+      font-size: 0.9375rem; width: 100%; position: relative;
+      overflow: hidden; /* アニメーション用に親要素のはみ出しを隠す */
     }
+
     .btn-primary:hover:not(:disabled) {
       background-color: var(--accent-hover);
       transform: translateY(-1px);
@@ -282,6 +293,37 @@
     .btn-primary:disabled {
       opacity: 0.6; cursor: not-allowed;
     }
+
+    .plane-icon {
+      margin-right: 0.5rem;
+      transition: transform 0.2s;
+    }
+
+    /* 飛んでいくアニメーション */
+    .flying {
+      position: absolute;
+      animation: flyPlane 1s forwards ease-in-out;
+      font-size: 1.2rem;
+      right: 1.75rem; /* ボタン内部で右端にアイコンがある想定 */
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    @keyframes flyPlane {
+      0% {
+        transform: translate(0, -50%) rotate(0) scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: translate(-100px, -150px) rotate(20deg) scale(0.9);
+        opacity: 0.8;
+      }
+      100% {
+        transform: translate(-250px, -300px) rotate(-45deg) scale(0.5);
+        opacity: 0;
+      }
+    }
+
     .success-message {
       display: none; align-items: center; justify-content: center;
       gap: 0.5rem; padding: 0.75rem 1.75rem;
@@ -296,15 +338,10 @@
       color: var(--danger); font-size: 0.8125rem;
       margin-top: 0.25rem; display: none;
     }
+
     .footer {
       text-align: center; padding: 2rem 1rem;
       color: var(--text-secondary); font-size: 0.875rem;
-    }
-    .holiday {
-      background-color: #fee2e2;
-    }
-    .holiday .date-btn:not(.selected) {
-      color: var(--danger);
     }
 
     @media (max-width: 640px) {
@@ -473,8 +510,9 @@
         <div class="form-group">
           <input type="email" id="email-input" placeholder="your.email@example.com">
         </div>
+        <!-- 紙飛行機アイコンにクラス plane-icon を付与 -->
         <button id="submit-btn" class="btn-primary">
-          <i class="fas fa-paper-plane"></i>
+          <i class="fas fa-paper-plane plane-icon"></i>
           送信する
         </button>
         <div id="success-message" class="success-message">
@@ -492,7 +530,7 @@
   <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // EmailJS初期化（service_id と public_key は環境に合わせて差し替えてください）
+      // EmailJS初期化
       (function(){
         emailjs.init("XhqJVhB68ooIcAMCD");
       })();
@@ -519,47 +557,35 @@
       const dutyTypeError = document.getElementById('duty-type-error');
 
       // -----------------------
-      // カレンダー関連処理
+      // カレンダー関連
       // -----------------------
       const monthTitles = document.querySelectorAll('.calendar-title');
       const calendarGrids = document.querySelectorAll('.calendar-grid');
 
-      // 表示する初期月（例として2025年7月に固定表示）
-      // 実運用では動的に設定するなど調整してください
-      let currentMonth = new Date(2025, 6, 1); // 6=7月（0始まりのため）
-
-      // 祝日リスト（例）
+      // 祝日リスト（例：軽微変更なし）
       const holidays = [
-        "2024-01-01","2024-01-08","2024-02-11","2024-03-20","2024-04-29",
-        "2024-05-03","2024-05-04","2024-05-05","2024-05-06","2024-07-15",
-        "2024-08-11","2024-08-12","2024-09-16","2024-09-22","2024-09-23",
-        "2024-10-14","2024-11-03","2024-11-04","2024-11-23","2024-12-30",
-        "2024-12-31","2025-01-01","2025-01-02","2025-01-03","2025-01-13",
-        "2025-02-11","2025-02-24","2025-03-20","2025-04-29","2025-05-03",
-        "2025-05-04","2025-05-05","2025-05-06","2025-07-21","2025-08-11",
-        "2025-09-15","2025-09-23","2025-10-13","2025-11-03","2025-11-23",
-        "2025-11-24","2026-01-12","2026-02-11","2026-03-20"
+        "2025-01-01","2025-01-02","2025-01-03","2025-01-13","2025-02-11","2025-02-24",
+        "2025-03-20","2025-04-29","2025-05-03","2025-05-04","2025-05-05","2025-05-06",
+        "2025-07-21","2025-08-11","2025-09-15","2025-09-23","2025-10-13","2025-11-03",
+        "2025-11-23","2025-11-24"
       ];
 
-      // 利用不可能日（「日直のみ」を不可にしたい日）
-      // 例: "2025-07-05", "2025-08-30", "2025-09-06", "2025-10-04", ...
+      // 利用不可能日（日直のみ不可）
       const specificUnavailableDates = [
         "2025-07-05","2025-08-30","2025-09-06","2025-10-04","2025-11-29","2025-12-14"
       ];
 
-      // 第1,3,5水曜を全部不可にするロジック（例）ここでは継続利用
+      // 例：第1,3,5水曜が完全不可
       const isUnavailableWednesday = (date) => {
         if (date.getDay() !== 3) return false;
         const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
         const dayOfWeekOfFirstDay = firstDayOfMonth.getDay();
-        // その月の「最初の水曜日」が何日か
         const firstWednesdayDate = 1 + (3 - dayOfWeekOfFirstDay + 7) % 7;
-        // dateが「第何水曜」か算出
         const weekNumber = Math.ceil((date.getDate() - firstWednesdayDate) / 7) + 1;
         return (weekNumber === 1 || weekNumber === 3 || weekNumber === 5);
       };
 
-      // タイムゾーンずれ対策：YYYY-MM-DD 形式の文字列をローカル時刻ベースで返す
+      // ローカル時間を YYYY-MM-DD に変換
       function formatDateForComparison(date) {
         const yyyy = date.getFullYear();
         const mm = String(date.getMonth() + 1).padStart(2, '0');
@@ -567,117 +593,102 @@
         return `${yyyy}-${mm}-${dd}`;
       }
 
-      // カレンダー全体で「日付そのものが完全不可」になる条件
-      // → 今回は「第1,3,5水曜が不可」以外はOKとする
-      //    (もし特定の平日ごとに「日直のみ不可」が必要ならさらに分岐を追加)
+      function isHoliday(date) {
+        return holidays.includes(formatDateForComparison(date));
+      }
+
+      // 「全部不可」になる日かどうか
       function isFullyUnavailableDate(date) {
         return isUnavailableWednesday(date);
       }
 
-      // 「日直のみ不可」にしたい日付かどうか
+      // 「日直のみ不可」にしたい日かどうか
       function isDayShiftUnavailable(date) {
-        const dateString = formatDateForComparison(date);
-        // 上記の specificUnavailableDates に載っている日なら「日直のみ不可」
-        return specificUnavailableDates.includes(dateString);
+        return specificUnavailableDates.includes(formatDateForComparison(date));
       }
 
-      function isHoliday(date) {
-        const dateString = formatDateForComparison(date);
-        return holidays.includes(dateString);
-      }
+      // デフォルトで2025年7月を表示
+      let currentMonth = new Date(2025, 6, 1);
 
-      // カレンダーを更新
       function updateCalendar(month) {
         monthTitles.forEach(title => {
           title.textContent = `${month.getFullYear()}年 ${month.getMonth() + 1}月`;
         });
 
-        calendarGrids.forEach((grid) => {
+        calendarGrids.forEach(grid => {
           const isPreferredCalendar = grid.closest('.calendar-wrapper').classList.contains('preferred');
           grid.innerHTML = '';
 
           // 曜日ヘッダー
           const daysOfWeek = ['日','月','火','水','木','金','土'];
-          daysOfWeek.forEach((day, index) => {
+          daysOfWeek.forEach((day, idx) => {
             let className = 'day-header';
-            if (index === 0) className += ' sunday';
-            if (index === 6) className += ' saturday';
+            if (idx === 0) className += ' sunday';
+            if (idx === 6) className += ' saturday';
             grid.innerHTML += `<div class="${className}">${day}</div>`;
           });
 
           const firstDay = new Date(month.getFullYear(), month.getMonth(), 1).getDay();
           const daysInMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
 
-          // 空のセル
+          // 空セル
           for (let i = 0; i < firstDay; i++) {
             grid.innerHTML += '<div class="calendar-cell empty-cell"></div>';
           }
 
           // 日付セル
-          for (let dayNum = 1; dayNum <= daysInMonth; dayNum++) {
-            const dateObj = new Date(month.getFullYear(), month.getMonth(), dayNum);
+          for (let d = 1; d <= daysInMonth; d++) {
+            const dateObj = new Date(month.getFullYear(), month.getMonth(), d);
             const dayOfWeek = dateObj.getDay();
-            const isFullUnavailable = isFullyUnavailableDate(dateObj);
             const holidayFlag = isHoliday(dateObj);
+            const fullNG = isFullyUnavailableDate(dateObj);
             const dayShiftNG = isDayShiftUnavailable(dateObj);
 
             let cellClass = 'calendar-cell';
-            if (holidayFlag) {
-              cellClass += ' holiday';
-            }
+            if (holidayFlag) cellClass += ' holiday';
 
-            // 週末 or 祝日 ⇒ 「日直」「当直」ボタンの2種類
+            // 週末 or 祝日 → 日直・当直の2ボタン
             if (dayOfWeek === 0 || dayOfWeek === 6 || holidayFlag) {
               cellClass += ' weekend-cell';
 
-              // 「日直」ボタンを押せないかどうか
-              // 1) 全部不可の場合 ⇒ 両方 disable
-              // 2) 日直のみ不可の場合 ⇒ 日直だけ disable, 当直は可能
-              // 3) 通常 ⇒ disableなし
-              let dayBtnDisabled = '';
-              let dutyBtnDisabled = '';
-
-              if (isPreferredCalendar && isFullUnavailable) {
-                // 全不可 (希望カレンダーで該当の場合はボタン無効)
+              let dayBtnDisabled = '', nightBtnDisabled = '';
+              // 希望カレンダーで「完全不可」なら両方 disabled
+              if (isPreferredCalendar && fullNG) {
                 dayBtnDisabled = ' disabled';
-                dutyBtnDisabled = ' disabled';
-              } else if (isPreferredCalendar && dayShiftNG) {
-                // 「日直のみ」不可 (当直ボタンは可能)
+                nightBtnDisabled = ' disabled';
+              }
+              // 希望カレンダーで「日直のみ不可」なら日直のみ disabled
+              else if (isPreferredCalendar && dayShiftNG) {
                 dayBtnDisabled = ' disabled';
-                dutyBtnDisabled = '';
               }
 
               grid.innerHTML += `
                 <div class="${cellClass}">
-                  <button class="duty-btn${dayBtnDisabled}" data-date="${dayNum}日">${dayNum}日</button>
-                  <button class="duty-btn${dutyBtnDisabled}" data-date="${dayNum}当">${dayNum}当</button>
+                  <button class="duty-btn${dayBtnDisabled}" data-date="${d}日">${d}日</button>
+                  <button class="duty-btn${nightBtnDisabled}" data-date="${d}当">${d}当</button>
                 </div>
               `;
             } else {
-              // 平日：1ボタン表示のみ
-              // isFullUnavailable が true なら disable
-              let disabled = (isPreferredCalendar && isFullUnavailable) ? ' disabled' : '';
-              // 「日直のみ不可」の日は基本週末前提なのでここでは適用しないが、
-              // 平日に「日直のみ不可」を設定したい場合はさらに分岐を追加
-
+              // 平日→1ボタン
+              let disabled = (isPreferredCalendar && fullNG) ? ' disabled' : '';
               grid.innerHTML += `
                 <div class="${cellClass}">
-                  <button class="date-btn${disabled}" data-date="${dayNum}">${dayNum}</button>
-                </div>`;
+                  <button class="date-btn${disabled}" data-date="${d}">${d}</button>
+                </div>
+              `;
             }
           }
 
-          // ボタン押下時の動作
+          // ボタンのクリック挙動
           grid.querySelectorAll('.date-btn:not(.disabled), .duty-btn:not(.disabled)').forEach(btn => {
             btn.addEventListener('click', function(e) {
               e.preventDefault();
-              // 選択状態の切り替え
               this.classList.toggle('selected');
-              // 「希望しない日」カレンダーなら .not-preferred を付与
               if (!isPreferredCalendar) {
+                // 「希望しない日」なら .not-preferred も付与
                 this.classList.toggle('not-preferred');
               }
-              // タップフィードバック
+              // タップアニメ
               this.style.transform = 'scale(0.95)';
               setTimeout(() => {
                 this.style.transform = '';
@@ -689,30 +700,31 @@
 
       updateCalendar(currentMonth);
 
-      // 月のナビゲーション（例：クリックで前後の月に移動）
-      document.querySelectorAll('.prev-month').forEach(button => {
-        button.addEventListener('click', function() {
+      // 前月・次月へ
+      document.querySelectorAll('.prev-month').forEach(btn => {
+        btn.addEventListener('click', () => {
           currentMonth.setMonth(currentMonth.getMonth() - 1);
           updateCalendar(currentMonth);
         });
       });
-      document.querySelectorAll('.next-month').forEach(button => {
-        button.addEventListener('click', function() {
+      document.querySelectorAll('.next-month').forEach(btn => {
+        btn.addEventListener('click', () => {
           currentMonth.setMonth(currentMonth.getMonth() + 1);
           updateCalendar(currentMonth);
         });
       });
 
       // -----------------------
-      // 送信ボタン処理
+      // 送信ボタン関連
       // -----------------------
       const submitBtn = document.getElementById('submit-btn');
       const successMessage = document.getElementById('success-message');
+      const planeIcon = submitBtn.querySelector('.plane-icon');
 
       submitBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        
-        // (1) 名前のチェック
+
+        // 1) 名前チェック
         let name = nameSelect.value;
         if (name === 'その他') {
           name = otherNameInput.value.trim();
@@ -724,7 +736,7 @@
           nameError.style.display = 'none';
         }
 
-        // (2) 日直・当直チェック
+        // 2) 日直・当直チェック
         let dutyType = dutyTypeSelect.value;
         if (!dutyType) {
           dutyTypeError.style.display = 'block';
@@ -734,7 +746,7 @@
           dutyTypeError.style.display = 'none';
         }
 
-        // (3) カレンダー選択結果取得
+        // カレンダー選択結果
         const comment = document.getElementById('comment-input').value.trim();
         const preferredDates = Array.from(document.querySelectorAll('.preferred .selected'))
                                     .map(el => el.getAttribute('data-date'));
@@ -742,52 +754,57 @@
                                        .map(el => el.getAttribute('data-date'));
         const email = document.getElementById('email-input').value.trim();
 
-        // ボタンを無効化
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 送信中...';
+        // 紙飛行機アイコンを飛ばす
+        planeIcon.classList.add('flying');
 
-        // EmailJS送信
-        emailjs.send("service_v7cenku", "template_rm69kao", {
-          name: name,
-          comment: comment,
-          duty_type: dutyType,
-          preferred_dates: preferredDates.join(', '),
-          not_preferred_dates: notPreferredDates.join(', '),
-          email: email
-        }).then(function(response) {
-          // 成功時
-          submitBtn.style.display = 'none';
-          successMessage.classList.add('show');
+        // 飛行アニメーション完了後に送信処理
+        planeIcon.addEventListener('animationend', handleSubmission, { once: true });
 
-          setTimeout(() => {
-            alert(
-              `送信が完了しました。\n\n` +
-              `回答者：${name}\n` +
-              `希望(日)：${preferredDates.join(', ')}\n` +
-              `希望しない日：${notPreferredDates.join(', ')}\n` +
-              `日直／当直：${dutyType}`
-            );
-            
-            // リセット動作
+        function handleSubmission() {
+          // ボタンを無効化 & スピナー表示
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 送信中...';
+
+          emailjs.send("service_v7cenku", "template_rm69kao", {
+            name,
+            comment,
+            duty_type: dutyType,
+            preferred_dates: preferredDates.join(', '),
+            not_preferred_dates: notPreferredDates.join(', '),
+            email
+          }).then(function(response) {
+            // 送信成功
+            submitBtn.style.display = 'none';
+            successMessage.classList.add('show');
             setTimeout(() => {
-              submitBtn.style.display = 'flex';
-              submitBtn.disabled = false;
-              submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> 送信する';
-              successMessage.classList.remove('show');
-            }, 2000);
-          }, 500);
+              alert(
+                `送信が完了しました。\n\n` +
+                `回答者：${name}\n` +
+                `希望(日)：${preferredDates.join(', ')}\n` +
+                `希望しない日：${notPreferredDates.join(', ')}\n` +
+                `日直／当直：${dutyType}`
+              );
+              // 初期状態に戻す（必要ならリセットなど）
+              setTimeout(() => {
+                planeIcon.classList.remove('flying');
+                submitBtn.style.display = 'flex';
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane plane-icon"></i> 送信する';
+                successMessage.classList.remove('show');
+              }, 2000);
+            }, 500);
 
-        }, function(error) {
-          // 失敗時
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> エラー';
-          
-          setTimeout(() => {
-            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> 送信する';
-          }, 3000);
-          
-          alert('送信に失敗しました。もう一度お試しください。\nエラーが続く場合は、運営までご連絡ください。');
-        });
+          }, function(error) {
+            // エラー時
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> エラー';
+            alert('送信に失敗しました。もう一度お試しください。');
+            setTimeout(() => {
+              planeIcon.classList.remove('flying');
+              submitBtn.innerHTML = '<i class="fas fa-paper-plane plane-icon"></i> 送信する';
+            }, 3000);
+          });
+        }
       });
     });
   </script>
