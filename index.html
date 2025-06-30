@@ -530,7 +530,6 @@
         <p>毎月8日が締め切りです</p>
       </div>
 
-      <!-- 提出状況セクション -->
       <div class="submission-status-section">
         <div class="submission-status-header">
           <div class="status-title">
@@ -551,7 +550,6 @@
         </div>
       </div>
 
-      <!-- 1. お名前 -->
       <div class="section">
         <div class="section-header">
           <div class="section-number">1</div>
@@ -603,7 +601,6 @@
         </div>
       </div>
 
-      <!-- 2. 希望する日 -->
       <div class="section">
         <div class="section-header">
           <div class="section-number">2</div>
@@ -620,7 +617,6 @@
         </div>
       </div>
 
-      <!-- 3. 希望しない日 -->
       <div class="section">
         <div class="section-header">
           <div class="section-number">3</div>
@@ -637,7 +633,6 @@
         </div>
       </div>
 
-      <!-- 4. 日直 or 当直 -->
       <div class="section">
         <div class="section-header">
           <div class="section-number">4</div>
@@ -656,7 +651,6 @@
         </div>
       </div>
 
-      <!-- 5. コメント -->
       <div class="section">
         <div class="section-header">
           <div class="section-number">5</div>
@@ -668,7 +662,6 @@
         </div>
       </div>
 
-      <!-- 6. メールアドレス -->
       <div class="section">
         <div class="section-header">
           <div class="section-number">6</div>
@@ -678,7 +671,6 @@
         <div class="form-group">
           <input type="email" id="email-input" placeholder="your.email@example.com">
         </div>
-        <!-- 紙飛行機アイコンにクラス plane-icon を付与 -->
         <button id="submit-btn" class="btn-primary">
           <i class="fas fa-paper-plane plane-icon"></i>
           送信する
@@ -814,13 +806,13 @@
             minute: '2-digit'
           });
 
-          // 全医師リスト（未提出者カウント用 - 吉玉先生は除外）
+          // 全医師リスト（未提出者カウント用）
           const allDoctors = [
             '西中川', '大場', '土方', '折原', '松坂', '石井', // 消化器内科
             '杉田', '岡田', '畠中', // 腎臓内科
             '河野', '松村', '鈴木', '伊藤', '堀', '春日', '三宅', // 呼吸器内科
             '林', '曹', // 糖尿病代謝内分泌科
-            '浅原', '高亀', '和田', '有上', '久次米' // 循環器内科（吉玉は選択肢にはあるがカウント対象外）
+            '吉玉', '浅原', '高亀', '和田', '有上', '久次米' // 循環器内科
           ];
 
           // 未提出者を計算
@@ -843,12 +835,12 @@
               </div>
             `;
           } else {
-            // 部署別に分類（吉玉先生は選択肢にはあるがカウント対象外）
+            // 部署別に分類
             const departments = {
               '消化器内科': ['西中川', '大場', '土方', '折原', '石井', '松坂'],
               '呼吸器内科': ['河野', '松村', '鈴木', '伊藤', '堀', '春日', '三宅'],
               '腎臓内科': ['杉田', '岡田', '畠中'],
-              '循環器内科': ['浅原', '高亀', '和田', '有上', '久次米'], // 吉玉は部署統計からも除外
+              '循環器内科': ['吉玉', '浅原', '高亀', '和田', '有上', '久次米'],
               '糖尿病代謝内分泌科': ['林', '曹']
             };
 
@@ -1064,7 +1056,7 @@
         return (weekNumber === 1 || weekNumber === 3 || weekNumber === 5);
       };
 
-      // ローカル時間を YYYY-MM-DD に変換
+      // ローカル時間をYYYY-MM-DD に変換
       function formatDateForComparison(date) {
         const yyyy = date.getFullYear();
         const mm = String(date.getMonth() + 1).padStart(2, '0');
@@ -1248,9 +1240,9 @@
         // カレンダー選択結果
         const comment = document.getElementById('comment-input').value.trim();
         const preferredDates = Array.from(document.querySelectorAll('.preferred .selected'))
-                                    .map(el => el.getAttribute('data-date'));
-        const notPreferredDates = Array.from(document.querySelectorAll('.not-preferred .selected'))
                                        .map(el => el.getAttribute('data-date'));
+        const notPreferredDates = Array.from(document.querySelectorAll('.not-preferred .selected'))
+                                          .map(el => el.getAttribute('data-date'));
         const email = document.getElementById('email-input').value.trim();
 
         // 紙飛行機アイコンを飛ばす
