@@ -751,19 +751,26 @@
           <div class="section-number">5</div>
           <div class="section-title">日直 or 当直</div>
         </div>
-        <p class="section-description">日直のほうがよい、当直のほうがよい、どちらでもよい、の中から選択してください。</p>
+         <p class="section-description">日直のほうがよい、当直のほうがよい、どちらでもよい、の中から選択してください。</p>
         <div class="form-group">
-          <label for="duty-type">希望</label>
-          <select id="duty-type" name="duty-type">
-            <option value="">選択してください</option>
-            <option value="日直のほうがよい">日直のほうがよい</option>
-            <option value="当直のほうがよい">当直のほうがよい</option>
-            <option value="どちらでもよい">どちらでもよい</option>
-          </select>
+          <div class="radio-button-group">
+            <label class="radio-button-label">
+              <input type="radio" name="duty-type" value="日直のほうがよい">
+              <span class="radio-button-text">日直</span>
+            </label>
+            <label class="radio-button-label">
+              <input type="radio" name="duty-type" value="当直のほうがよい">
+              <span class="radio-button-text">当直</span>
+            </label>
+            <label class="radio-button-label">
+              <input type="radio" name="duty-type" value="どちらでもよい" checked>
+              <span class="radio-button-text">どちらでもよい</span>
+            </label>
+          </div>
           <p id="duty-type-error" class="error-message">必須項目です。選択してください。</p>
         </div>
       </div>
-
+      
       <div class="section collapsible-section">
         <div class="section-header">
           <div class="section-number">6</div>
@@ -1361,14 +1368,15 @@
         }
 
         // 2) 日直・当直チェック
-        let dutyType = dutyTypeSelect.value;
+        // ★ 変更点: ラジオボタンから値を取得
+        const dutyType = document.querySelector('input[name="duty-type"]:checked').value;
         if (!dutyType) {
           dutyTypeError.style.display = 'block';
-          dutyTypeSelect.focus();
-          return;
+          return; // ラジオボタンなのでフォーカスは不要
         } else {
           dutyTypeError.style.display = 'none';
         }
+
         
         // ★ 変更点 1: 「提出の種類」ラジオボタンの値を取得します
         const submissionType = document.querySelector('input[name="submission-type"]:checked').value;
