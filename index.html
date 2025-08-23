@@ -658,7 +658,7 @@
       </div>
 			<div class="section">
         <div class="section-header">
-          <div class="section-number">1.5</div>
+          <div class="section-number">2</div>
           <div class="section-title">提出の種類</div>
         </div>
         <div class="form-group">
@@ -700,7 +700,7 @@
 
       <div class="section">
         <div class="section-header">
-          <div class="section-number">3</div>
+          <div class="section-number">4</div>
           <div class="section-title">希望しない日</div>
         </div>
         <p class="section-description">翌日外勤・外来・救急当番のためできない場合も含みます。木下先生は入力不要です。</p>
@@ -716,7 +716,7 @@
 
       <div class="section">
         <div class="section-header">
-          <div class="section-number">4</div>
+          <div class="section-number">5</div>
           <div class="section-title">日直 or 当直</div>
         </div>
         <p class="section-description">日直のほうがよい、当直のほうがよい、どちらでもよい、の中から選択してください。</p>
@@ -734,7 +734,7 @@
 
       <div class="section">
         <div class="section-header">
-          <div class="section-number">5</div>
+          <div class="section-number">6</div>
           <div class="section-title">コメント</div>
         </div>
         <p class="section-description">特別な希望やメッセージがあれば入力してください。このサイトのUIや当直決めに対する全般的なご意見、コメントもあればお願いします</p>
@@ -745,7 +745,7 @@
 
       <div class="section">
         <div class="section-header">
-          <div class="section-number">6</div>
+          <div class="section-number">7</div>
           <div class="section-title">メールアドレス</div>
         </div>
         <p class="section-description">回答結果を後で確認できます。</p>
@@ -1299,7 +1299,7 @@
       const successMessage = document.getElementById('success-message');
       const planeIcon = submitBtn.querySelector('.plane-icon');
 
-      submitBtn.addEventListener('click', async function(e) {
+            submitBtn.addEventListener('click', async function(e) {
         e.preventDefault();
 
         // 1) 名前チェック
@@ -1323,6 +1323,9 @@
         } else {
           dutyTypeError.style.display = 'none';
         }
+        
+        // ★ 変更点 1: 「提出の種類」ラジオボタンの値を取得します
+        const submissionType = document.querySelector('input[name="submission-type"]:checked').value;
 
         // カレンダー選択結果
         const comment = document.getElementById('comment-input').value.trim();
@@ -1346,6 +1349,8 @@
           try {
             // EmailJS送信
             const response = await emailjs.send("service_v7cenku", "template_rm69kao", {
+              // ★ 変更点 2: EmailJSに送るデータに submission_type を追加します
+              submission_type: submissionType, 
               name,
               comment,
               duty_type: dutyType,
@@ -1377,6 +1382,8 @@
             setTimeout(() => {
               alert(
                 `送信が完了しました。\n\n` +
+                // ★ 変更点 3: 送信完了のアラートにも表示し、ユーザーに確認してもらいます
+                `【提出の種類】：${submissionType}\n` + 
                 `回答者：${name}\n` +
                 `希望(日)：${preferredDates.join(', ')}\n` +
                 `希望しない日：${notPreferredDates.join(', ')}\n` +
