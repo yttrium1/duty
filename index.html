@@ -520,6 +520,60 @@
         background-color: transparent; border-color: var(--border);
       }
     }
+    
+        /* --- ▼ 提出の種類ボタンのスタイル ▼ --- */
+    .radio-button-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .radio-button-label input[type="radio"] {
+      /* 元のラジオボタンを完全に隠す */
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .radio-button-text {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background-color: var(--bg-primary);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+      font-weight: 500;
+      font-size: 0.9375rem;
+    }
+
+    /* ホバー時のスタイル（未選択のもののみ） */
+    .radio-button-label input[type="radio"]:not(:checked) + .radio-button-text:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background-color: var(--primary-light);
+    }
+
+    /* 選択時のスタイル */
+    .radio-button-label input[type="radio"]:checked + .radio-button-text {
+      background-color: var(--primary);
+      border-color: var(--primary);
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 2px 4px rgba(37,99,235,0.2);
+      transform: translateY(-1px);
+    }
+
+    .radio-button-text .icon {
+      font-size: 0.875rem;
+    }
+    /* --- ▲ 提出の種類ボタンのスタイル ▲ --- */
+
   </style>
 </head>
 <body>
@@ -602,25 +656,32 @@
           <p id="name-error" class="error-message">お名前を選択または入力してください。</p>
         </div>
       </div>
-			      <div class="section">
+			<div class="section">
         <div class="section-header">
-          <div class="section-number">2</div> <div class="section-title">提出の種類</div>
+          <div class="section-number">1.5</div>
+          <div class="section-title">提出の種類</div>
         </div>
         <div class="form-group">
-          <div class="radio-group" style="display: flex; gap: 1rem;">
-            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+          <div class="radio-button-group">
+            <label class="radio-button-label">
               <input type="radio" name="submission-type" value="初回" checked>
-              <span>初回提出</span>
+              <span class="radio-button-text">
+                <i class="fas fa-pen-nib icon"></i>
+                初回提出
+              </span>
             </label>
-            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+            <label class="radio-button-label">
               <input type="radio" name="submission-type" value="修正">
-              <span>修正して再提出</span>
+              <span class="radio-button-text">
+                <i class="fas fa-sync-alt icon"></i>
+                修正して再提出
+              </span>
             </label>
           </div>
           <p id="submission-type-error" class="error-message">提出の種類を選択してください。</p>
         </div>
       </div>
-
+     
       <div class="section">
         <div class="section-header">
           <div class="section-number">3</div>
