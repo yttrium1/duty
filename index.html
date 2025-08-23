@@ -573,6 +573,38 @@
       font-size: 0.875rem;
     }
     /* --- ▲ 提出の種類ボタンのスタイル ▲ --- */
+	    /* --- ▼ セクション表示アニメーションのスタイル ▼ --- */
+    .collapsible-section {
+      /* アニメーションの設定 */
+      transition: max-height 0.7s cubic-bezier(0.22, 1, 0.36, 1), 
+                  opacity 0.5s ease-in-out,
+                  transform 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+                  padding 0.7s, margin 0.7s, border-width 0.7s;
+      
+      /* 初期状態（非表示） */
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+      margin-top: 0;
+      margin-bottom: 0;
+      border-width: 0;
+      transform: translateY(-20px);
+      pointer-events: none; /* 非表示中はクリックなどを無効に */
+    }
+
+    .collapsible-section.is-visible {
+      /* 表示状態 */
+      max-height: 1200px; /* コンテンツに十分な高さを確保 */
+      opacity: 1;
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+      border-width: 1px;
+      transform: translateY(0);
+      pointer-events: auto; /* 表示されたら操作可能に */
+    }
+    /* --- ▲ セクション表示アニメーションのスタイル ▲ --- */
 
   </style>
 </head>
@@ -604,7 +636,7 @@
         </div>
       </div>
 
-      <div class="section">
+      <div class="section collapsible-section">
         <div class="section-header">
           <div class="section-number">1</div>
           <div class="section-title">お名前</div>
@@ -656,7 +688,7 @@
           <p id="name-error" class="error-message">お名前を選択または入力してください。</p>
         </div>
       </div>
-			<div class="section">
+			<div class="section collapsible-section"">
         <div class="section-header">
           <div class="section-number">2</div>
           <div class="section-title">提出の種類</div>
@@ -682,7 +714,7 @@
         </div>
       </div>
      
-      <div class="section">
+      <div class="section collapsible-section">
         <div class="section-header">
           <div class="section-number">3</div>
           <div class="section-title">希望する日</div>
@@ -698,7 +730,7 @@
         </div>
       </div>
 
-      <div class="section">
+      <div class="section collapsible-section">
         <div class="section-header">
           <div class="section-number">4</div>
           <div class="section-title">希望しない日</div>
@@ -714,7 +746,7 @@
         </div>
       </div>
 
-      <div class="section">
+      <div class="section collapsible-section">
         <div class="section-header">
           <div class="section-number">5</div>
           <div class="section-title">日直 or 当直</div>
@@ -732,7 +764,7 @@
         </div>
       </div>
 
-      <div class="section">
+      <div class="section collapsible-section">
         <div class="section-header">
           <div class="section-number">6</div>
           <div class="section-title">コメント</div>
@@ -743,7 +775,7 @@
         </div>
       </div>
 
-      <div class="section">
+      <div class="section collapsible-section">
         <div class="section-header">
           <div class="section-number">7</div>
           <div class="section-title">メールアドレス</div>
@@ -1095,7 +1127,21 @@
       const nameSelect = document.getElementById('name-select');
       const otherNameInput = document.getElementById('other-name-input');
       const nameError = document.getElementById('name-error');
+			
+      const collapsibleSections = document.querySelectorAll('.collapsible-section');
 
+      nameSelect.addEventListener('change', function() {
+        if (this.value) { // 何か名前が選択されたら
+          collapsibleSections.forEach(section => {
+            section.classList.add('is-visible');
+          });
+        } else { // 「回答者を選択してください」に戻されたら
+          collapsibleSections.forEach(section => {
+            section.classList.remove('is-visible');
+          });
+        }
+      });
+      
       nameSelect.addEventListener('change', function() {
         if (this.value === 'その他') {
           otherNameInput.style.display = 'block';
