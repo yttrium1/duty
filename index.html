@@ -569,7 +569,6 @@
             <optgroup label="呼吸器内科">
               <option value="河野">河野先生</option>
               <option value="松村">松村先生</option>
-              <option value="鈴木">鈴木先生</option>
               <option value="伊藤">伊藤先生</option>
               <option value="堀">堀先生</option>
               <option value="春日">春日先生</option>
@@ -603,10 +602,28 @@
           <p id="name-error" class="error-message">お名前を選択または入力してください。</p>
         </div>
       </div>
+			      <div class="section">
+        <div class="section-header">
+          <div class="section-number">2</div> <div class="section-title">提出の種類</div>
+        </div>
+        <div class="form-group">
+          <div class="radio-group" style="display: flex; gap: 1rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+              <input type="radio" name="submission-type" value="初回" checked>
+              <span>初回提出</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+              <input type="radio" name="submission-type" value="修正">
+              <span>修正して再提出</span>
+            </label>
+          </div>
+          <p id="submission-type-error" class="error-message">提出の種類を選択してください。</p>
+        </div>
+      </div>
 
       <div class="section">
         <div class="section-header">
-          <div class="section-number">2</div>
+          <div class="section-number">3</div>
           <div class="section-title">希望する日</div>
         </div>
         <p class="section-description">木曜日は循環器医師のみです。</p>
@@ -625,7 +642,7 @@
           <div class="section-number">3</div>
           <div class="section-title">希望しない日</div>
         </div>
-        <p class="section-description">翌日外勤・外来のためできない場合も含みます（救急当番などでできない場合もコメントではなく、選択で回答してください、木下先生は入力不要です。=）</p>
+        <p class="section-description">翌日外勤・外来・救急当番のためできない場合も含みます。木下先生は入力不要です。</p>
         <div class="calendar-wrapper not-preferred">
           <div class="calendar-header">
             <button class="nav-btn prev-month"><i class="fas fa-chevron-left"></i></button>
@@ -813,7 +830,7 @@
           const allDoctors = [
             '西中川', '大場', '土方', '折原', '松坂', '石井', // 消化器内科
             '杉田', '岡田', '畠中', // 腎臓内科
-            '河野', '松村', '鈴木', '伊藤', '堀', '春日', '三宅', // 呼吸器内科
+            '河野', '松村', '伊藤', '堀', '春日', '三宅', // 呼吸器内科
             '林', '曹', // 糖尿病代謝内分泌科
             '吉玉', '浅原', '高亀', '和田', '有上', '久次米', // 循環器内科
             '木下' // 救急科
@@ -842,7 +859,7 @@
             // 部署別に分類
             const departments = {
               '消化器内科': ['西中川', '大場', '土方', '折原', '石井', '松坂'],
-              '呼吸器内科': ['河野', '松村', '鈴木', '伊藤', '堀', '春日', '三宅'],
+              '呼吸器内科': ['河野', '松村', '伊藤', '堀', '春日', '三宅'],
               '腎臓内科': ['杉田', '岡田', '畠中'],
               '循環器内科': ['吉玉', '浅原', '高亀', '和田', '有上', '久次米'],
               '糖尿病代謝内分泌科': ['林', '曹'],
