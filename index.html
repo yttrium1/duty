@@ -1181,7 +1181,13 @@
         "2025-07-05","2025-08-30","2025-09-06",
       ];
 
-      // 例：第1,3,5水曜が完全不可
+      // 完全に選択不可能な期間（2025/12/27-2026/1/4）
+      const fullyUnavailableDates = [
+        "2025-12-27", "2025-12-28", "2025-12-29", "2025-12-30", "2025-12-31",
+        "2026-01-01", "2026-01-02", "2026-01-03", "2026-01-04"
+      ];
+
+      // 例:第1,3,5水曜が完全不可
       const isUnavailableWednesday = (date) => {
         if (date.getDay() !== 3) return false;
         const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -1205,7 +1211,7 @@
 
       // 「全部不可」になる日かどうか
       function isFullyUnavailableDate(date) {
-        return false;
+        return fullyUnavailableDates.includes(formatDateForComparison(date));
       }
 
       // 「日直のみ不可」にしたい日かどうか
@@ -1432,11 +1438,11 @@
               alert(
                 `送信が完了しました。\n\n` +
                 // ★ 変更点 3: 送信完了のアラートにも表示し、ユーザーに確認してもらいます
-                `【提出の種類】：${submissionType}\n` + 
-                `回答者：${name}\n` +
-                `希望(日)：${preferredDates.join(', ')}\n` +
-                `希望しない日：${notPreferredDates.join(', ')}\n` +
-                `日直／当直：${dutyType}`
+                `【提出の種類】:${submissionType}\n` + 
+                `回答者:${name}\n` +
+                `希望(日):${preferredDates.join(', ')}\n` +
+                `希望しない日:${notPreferredDates.join(', ')}\n` +
+                `日直／当直:${dutyType}`
               );
               
               // 初期状態に戻す
